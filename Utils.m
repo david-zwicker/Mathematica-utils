@@ -5,23 +5,35 @@ LogNormalMeanStdDistribution::usage =
     "LogNormal distribution parameterized by its mean and standard deviation"
 LogNormalMeanVarDistribution::usage = 
     "LogNormal distribution parameterized by its mean and variance deviation"
+LogUniformDistributionMeanWidth::usage = 
+    "LogUniform distribution parameterized by its mean and standard deviation"
 only::usage = 
     "Return only element from a list. Raise error if length of the list is not 1"
 
 
 Begin["`Private`"]
 
-LogNormalMeanStdDistribution[mu_,sigma_]:=
+LogNormalMeanStdDistribution[mean_, std_]:=
     LogNormalDistribution[
-        Log[mu^2/Sqrt[mu^2+sigma^2]],
-        Sqrt@Log[1+sigma^2/mu^2]
+        Log[mean^2 / Sqrt[mean^2+std^2]],
+        Sqrt@Log[1 + std^2/mean^2]
     ]
 
 
-LogNormalMeanVarDistribution[mu_,var_]:=
+LogNormalMeanVarDistribution[mean_, var_]:=
     LogNormalDistribution[
-        Log[mu^2/Sqrt[mu^2+var]],
-        Sqrt@Log[1+var/mu^2]
+        Log[mean^2 / Sqrt[mean^2+var]],
+        Sqrt@Log[1 + var/mean^2]
+    ]
+
+
+LogUniformDistributionMeanWidth[mean_, width_] := Module[{m, u},
+
+    m = 2*mean*width*Log[width]/(width^2 - 1);
+
+    TransformedDistribution[Exp[u], 
+        u \[Distributed] 
+        UniformDistribution[{Log[m] - Log[width], Log[m] + Log[width]}]]
     ]
 
 
