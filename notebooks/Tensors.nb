@@ -1,0 +1,1446 @@
+(* Content-type: application/mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 7.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       145,          7]
+NotebookDataLength[     57565,       1438]
+NotebookOptionsPosition[     51586,       1338]
+NotebookOutlinePosition[     52077,       1356]
+CellTagsIndexPosition[     52034,       1353]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell["Tensors", "Title",
+ CellChangeTimes->{{3.512879945448289*^9, 
+  3.5128799469617777`*^9}},ExpressionUUID->"8acc041f-e808-42df-9e70-\
+ab99b0053817"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"BeginPackage", "[", 
+   RowBox[{"\"\<Tensors`\>\"", ",", 
+    RowBox[{"{", "\"\<Tensors`\>\"", "}"}]}], "]"}], ";"}]], "Input",
+ CellChangeTimes->{{3.512880823419314*^9, 3.512880828310779*^9}},
+ CellLabel->"In[5]:=",ExpressionUUID->"d8037117-6001-4100-9ae5-12f297dd6a21"],
+
+Cell[CellGroupData[{
+
+Cell["Public", "Section",
+ CellChangeTimes->{{3.512880868251*^9, 
+  3.512880868950261*^9}},ExpressionUUID->"32f42923-c931-4aa3-b98d-\
+a8eb448bda59"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"SetCoordinates", "::", "usage"}], "=", 
+   "\"\<Sets the coordinates and the metric tensor defining the space and its \
+dimension\>\""}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"GetCoordinates", "::", "usage"}], "=", 
+   "\"\<Returns the coordinates currently used\>\""}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"GetMetricTensor", "::", "usage"}], "=", 
+   "\"\<Returns the metric tensor currently used\>\""}], ";"}]}], "Input",
+ CellChangeTimes->{{3.512897361671629*^9, 3.512897394061161*^9}},
+ CellLabel->"In[6]:=",ExpressionUUID->"d75073bd-5bd2-42c4-8c90-95b2880fae85"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"MakeTensor", "::", "usage"}], "=", 
+   "\"\<Converts an array into a tensor\>\""}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"Rank", "::", "usage"}], "=", 
+   "\"\<Returns the rank of the tensor\>\""}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"CovariantQ", "::", "usage"}], "=", 
+   "\"\<Checks whether a given tensor is covariant\>\""}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"ContravariantQ", "::", "usage"}], "=", 
+   "\"\<Checks whether a given tensor is contravariant\>\""}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"MixedQ", "::", "usage"}], "=", 
+   "\"\<Checks whether a given tensor is of mixed type\>\""}], 
+  ";"}]}], "Input",
+ CellChangeTimes->{{3.512880875855043*^9, 3.512880926798497*^9}, {
+  3.512882553128737*^9, 3.512882560560275*^9}},
+ CellLabel->"In[9]:=",ExpressionUUID->"14404bb3-7357-4b16-a146-edd9e4c21037"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"ScalarQ", "::", "usage"}], "=", 
+   "\"\<Checks whether a given tensor is a scalar\>\""}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"VectorQ", "::", "usage"}], "=", 
+   "\"\<Checks whether a given tensor is a vector\>\""}], ";"}]}], "Input",
+ CellChangeTimes->{{3.5128809307841063`*^9, 3.512880952189191*^9}},
+ CellLabel->"In[14]:=",ExpressionUUID->"ae13106e-14b0-4db7-9d7e-fc07885d7a56"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"RaiseIndex", "::", "usage"}], "=", 
+   "\"\<Raises the given index\>\""}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"LowerIndex", "::", "usage"}], "=", 
+   "\"\<Lowers the given index\>\""}], ";"}]}], "Input",
+ CellChangeTimes->{{3.512882543290062*^9, 3.512882648523219*^9}, {
+  3.5128826933241587`*^9, 3.51288270613221*^9}, {3.512887222715077*^9, 
+  3.5128872280708103`*^9}, {3.512897293292718*^9, 3.512897294169795*^9}},
+ CellLabel->"In[16]:=",ExpressionUUID->"554b2703-6a28-4c46-9573-73b74d982de2"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"TensorProduct", "::", "usage"}], "=", 
+   "\"\<Returns the tensor product of two tensors\>\""}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"Contract", "::", "usage"}], "=", 
+   "\"\<Contracts a tensor along the two given indices\>\""}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"DCovariant", "::", "usage"}], "=", 
+   "\"\<Calculates the covariante derivative of the tensor\>\""}], 
+  ";"}]}], "Input",
+ CellChangeTimes->{{3.512882756401416*^9, 3.512882797520934*^9}, {
+  3.5128956764051323`*^9, 3.512895689333123*^9}},
+ CellLabel->"In[18]:=",ExpressionUUID->"06880cd2-5cdb-496c-bfa5-fbcdfc3c2124"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"TestTensor", "::", "usage"}], "=", 
+   "\"\<Creates a test tensor with the given rank\>\""}], ";"}]], "Input",
+ CellChangeTimes->{{3.512896866884939*^9, 3.5128968837482367`*^9}},
+ CellLabel->"In[21]:=",ExpressionUUID->"44781bb5-33a5-4fe0-a6bc-0bba6a7e8de0"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Private", "Section",
+ CellChangeTimes->{{3.5128808487943277`*^9, 
+  3.512880849325184*^9}},ExpressionUUID->"3b1d3022-a5c7-4b86-965f-\
+83840a2b7b31"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"Begin", "[", "\"\<Private`\>\"", "]"}]], "Input",
+ CellLabel->"In[22]:=",ExpressionUUID->"61239665-dac3-486f-97b0-d4f796bb62d5"],
+
+Cell[BoxData["\<\"Private`\"\>"], "Output",
+ CellChangeTimes->{
+  3.512882535960541*^9, {3.51288280220977*^9, 3.512882814954199*^9}, 
+   3.512885955622366*^9, {3.5128860306136637`*^9, 3.512886081900467*^9}, {
+   3.512886112785874*^9, 3.5128861238738127`*^9}, 3.512886889441617*^9, 
+   3.512887243875502*^9, {3.5128873479463243`*^9, 3.5128873586024723`*^9}, 
+   3.512894934173296*^9, {3.5128955192288017`*^9, 3.512895546592743*^9}, 
+   3.512895694851918*^9, 3.512896220694202*^9, 3.51289653073956*^9, 
+   3.512896587686138*^9, {3.512896952176333*^9, 3.512896982942417*^9}, 
+   3.512897023465022*^9, 3.512897062733976*^9, 3.5128972027911253`*^9, 
+   3.814674908875825*^9},
+ CellLabel->"Out[22]=",ExpressionUUID->"1d557faf-d0d4-4235-ac82-0006c838e075"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Messages", "Subsection",
+ CellChangeTimes->{{3.512881431878334*^9, 
+  3.5128814329342203`*^9}},ExpressionUUID->"18a1b528-5d24-48ce-a363-\
+208ffe55473e"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"Tensors", "::", "coordsunknown"}], "=", 
+   "\"\<Unknown coordinate system '`1`'\>\""}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"Tensors", "::", "ranklow"}], "=", 
+   "\"\<The rank of the Tensor is too low\>\""}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"Tensors", "::", "rankhigh"}], "=", 
+   "\"\<The rank of the Tensor is too high\>\""}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"Tensors", "::", "sameidx"}], "=", 
+   "\"\<The indices are the same\>\""}], ";"}]}], "Input",
+ CellChangeTimes->{{3.5128814375807533`*^9, 3.5128814903454533`*^9}, {
+  3.512881537300905*^9, 3.512881542488825*^9}, {3.512885332845117*^9, 
+  3.512885339652677*^9}, {3.512895664967412*^9, 3.5128956705243883`*^9}, {
+  3.512896400322176*^9, 3.512896409361619*^9}, {3.512896443450417*^9, 
+  3.512896448915638*^9}},
+ CellLabel->"In[23]:=",ExpressionUUID->"2fd877d1-88a6-4848-b022-2523156549ed"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Coordinate System", "Subsection",
+ CellChangeTimes->{{3.512896279375177*^9, 
+  3.512896281962079*^9}},ExpressionUUID->"4ee7cfc9-84b9-4184-b7ef-\
+16b985092afe"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"CalculateChristoffelValues", "[", "]"}], ":=", 
+  RowBox[{"Module", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"k", ",", "i", ",", "j", ",", "m"}], "}"}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{"Tensors`Christoffel", "=", 
+     RowBox[{"Table", "[", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"Sum", "[", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{
+          RowBox[{
+           RowBox[{"Tensors`MetricUU", "[", 
+            RowBox[{"[", 
+             RowBox[{"k", ",", "m"}], "]"}], "]"}], "/", "2"}], "*", 
+          RowBox[{"(", 
+           RowBox[{
+            RowBox[{"D", "[", 
+             RowBox[{
+              RowBox[{"Tensors`MetricDD", "[", 
+               RowBox[{"[", 
+                RowBox[{"m", ",", "i"}], "]"}], "]"}], ",", 
+              RowBox[{"Tensors`Coords", "[", 
+               RowBox[{"[", "j", "]"}], "]"}]}], "]"}], "+", 
+            RowBox[{"D", "[", 
+             RowBox[{
+              RowBox[{"Tensors`MetricDD", "[", 
+               RowBox[{"[", 
+                RowBox[{"j", ",", "m"}], "]"}], "]"}], ",", 
+              RowBox[{"Tensors`Coords", "[", 
+               RowBox[{"[", "i", "]"}], "]"}]}], "]"}], "-", 
+            RowBox[{"D", "[", 
+             RowBox[{
+              RowBox[{"Tensors`MetricDD", "[", 
+               RowBox[{"[", 
+                RowBox[{"i", ",", "j"}], "]"}], "]"}], ",", 
+              RowBox[{"Tensors`Coords", "[", 
+               RowBox[{"[", "m", "]"}], "]"}]}], "]"}]}], ")"}]}], 
+         "\[IndentingNewLine]", ",", 
+         RowBox[{"{", 
+          RowBox[{"m", ",", "Tensors`Dimension"}], "}"}]}], "]"}], 
+       "\[IndentingNewLine]", ",", 
+       RowBox[{"{", 
+        RowBox[{"k", ",", "Tensors`Dimension"}], "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"i", ",", "Tensors`Dimension"}], "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"j", ",", "Tensors`Dimension"}], "}"}]}], "]"}]}]}], 
+   "\[IndentingNewLine]", "]"}]}]], "Input",
+ CellChangeTimes->{{3.512887088977161*^9, 3.5128871616927958`*^9}, {
+  3.51288732255398*^9, 3.512887341484511*^9}},
+ CellLabel->"In[27]:=",ExpressionUUID->"7b463bf2-f7bb-4796-9037-49454fbfaca1"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"SetCoordinates", "[", 
+   RowBox[{
+    RowBox[{"metric_", "?", "MatrixQ"}], ",", 
+    RowBox[{"coords_", "?", "VectorQ"}], ",", 
+    RowBox[{"assumptions_", ":", "True"}]}], "]"}], ":=", 
+  RowBox[{"(", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"Tensors`Coords", "=", "coords"}], ";", "\[IndentingNewLine]", 
+    RowBox[{"Tensors`Assumptions", "=", "assumptions"}], ";", 
+    "\[IndentingNewLine]", 
+    RowBox[{"Tensors`MetricUU", "=", "metric"}], ";", "\[IndentingNewLine]", 
+    RowBox[{"Tensors`MetricDD", "=", 
+     RowBox[{"Inverse", "[", "metric", "]"}]}], ";", "\[IndentingNewLine]", 
+    RowBox[{"Tensors`Dimension", "=", 
+     RowBox[{"Length", "[", "metric", "]"}]}], ";", "\[IndentingNewLine]", 
+    RowBox[{"Tensors`ScaleFactor", "=", 
+     RowBox[{"FullSimplify", "[", 
+      RowBox[{"Sqrt", "[", 
+       RowBox[{"Diagonal", "[", "Tensors`MetricDD", "]"}], "]"}], "]"}]}], 
+    ";", "\[IndentingNewLine]", 
+    RowBox[{"CalculateChristoffelValues", "[", "]"}], ";"}], 
+   "\[IndentingNewLine]", ")"}]}]], "Input",
+ CellChangeTimes->{{3.512881586761838*^9, 3.512881630105516*^9}, {
+   3.512881675056821*^9, 3.5128817030720663`*^9}, {3.512881846047377*^9, 
+   3.512881857320627*^9}, 3.512885836158437*^9, {3.512886988768208*^9, 
+   3.512887035289515*^9}, {3.5128870701568203`*^9, 3.512887079963415*^9}, {
+   3.512887171428113*^9, 3.512887218893978*^9}, {3.512887356087577*^9, 
+   3.512887356403726*^9}, {3.512897137769958*^9, 3.5128971412094183`*^9}, {
+   3.512897431356084*^9, 3.512897451085978*^9}},
+ CellLabel->"In[28]:=",ExpressionUUID->"bb9cdf3b-79db-4040-9ef8-6f257f596532"],
+
+Cell[BoxData[
+ TemplateBox[{
+  "Assumptions", "shdw", 
+   "\"Symbol \\!\\(\\*RowBox[{\\\"\\\\\\\"Assumptions\\\\\\\"\\\"}]\\) \
+appears in multiple contexts \\!\\(\\*RowBox[{\\\"{\\\", \
+RowBox[{\\\"\\\\\\\"Tensors`\\\\\\\"\\\", \\\",\\\", \
+\\\"\\\\\\\"System`\\\\\\\"\\\"}], \\\"}\\\"}]\\); definitions in context \\!\
+\\(\\*RowBox[{\\\"\\\\\\\"Tensors`\\\\\\\"\\\"}]\\) may shadow or be shadowed \
+by other definitions.\"", 2, 28, 1, 27629032233978641350, "Local", 
+   "Tensors`Assumptions"},
+  "MessageTemplate2"]], "Message", "MSG",
+ CellChangeTimes->{3.8146749089075937`*^9},
+ CellLabel->
+  "During evaluation of \
+In[28]:=",ExpressionUUID->"6f6e6652-287a-4ea2-8a53-039f39946aa9"]
+}, Open  ]],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"SetCoordinates", "[", 
+    RowBox[{"system_String", ",", 
+     RowBox[{"coords_", ":", "None"}]}], "]"}], ":=", 
+   RowBox[{"Module", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"s", "=", 
+        RowBox[{"ToLowerCase", "[", "system", "]"}]}], ",", 
+       RowBox[{"c", "=", "coords"}], ",", "a"}], "}"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{"Which", "[", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"s", "===", "\"\<carthesian\>\""}], ",", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"If", "[", 
+         RowBox[{
+          RowBox[{"coords", "===", "None"}], ",", 
+          RowBox[{"c", "=", 
+           RowBox[{"{", 
+            RowBox[{"x", ",", "y", ",", "z"}], "}"}]}]}], "]"}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"SetCoordinates", "[", 
+         RowBox[{"c", ",", 
+          RowBox[{"IdentityMatrix", "[", "3", "]"}]}], "]"}]}], ",", 
+       "\[IndentingNewLine]", "\[IndentingNewLine]", 
+       RowBox[{"s", "===", "\"\<spherical\>\""}], ",", "\[IndentingNewLine]", 
+       
+       RowBox[{
+        RowBox[{"If", "[", 
+         RowBox[{
+          RowBox[{"coords", "===", "None"}], ",", 
+          RowBox[{"c", "=", 
+           RowBox[{"{", 
+            RowBox[{"r", ",", "\[Theta]", ",", "\[Phi]"}], "}"}]}]}], "]"}], 
+        ";", "\[IndentingNewLine]", 
+        RowBox[{"a", "=", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"c", "[", 
+            RowBox[{"[", "1", "]"}], "]"}], "\[GreaterEqual]", "0"}], "&&", 
+          RowBox[{"0", "\[LessEqual]", 
+           RowBox[{"c", "[", 
+            RowBox[{"[", "2", "]"}], "]"}], "\[LessEqual]", "Pi"}], "&&", 
+          RowBox[{
+           RowBox[{"-", "Pi"}], "<", 
+           RowBox[{"c", "[", 
+            RowBox[{"[", "3", "]"}], "]"}], "\[LessEqual]", "Pi"}], "&&", 
+          RowBox[{
+           RowBox[{"Csc", "[", 
+            RowBox[{"c", "[", 
+             RowBox[{"[", "2", "]"}], "]"}], "]"}], "\[GreaterEqual]", 
+           "0"}]}]}], ";", "\[IndentingNewLine]", 
+        RowBox[{"SetCoordinates", "[", 
+         RowBox[{"c", ",", 
+          RowBox[{"DiagonalMatrix", "[", 
+           RowBox[{"{", 
+            RowBox[{"1", ",", 
+             RowBox[{
+              RowBox[{"c", "[", 
+               RowBox[{"[", "1", "]"}], "]"}], "^", "2"}], ",", 
+             RowBox[{
+              RowBox[{"(", 
+               RowBox[{
+                RowBox[{"c", "[", 
+                 RowBox[{"[", "1", "]"}], "]"}], "*", 
+                RowBox[{"Sin", "[", 
+                 RowBox[{"c", "[", 
+                  RowBox[{"[", "2", "]"}], "]"}], "]"}]}], ")"}], "^", 
+              "2"}]}], "}"}], "]"}], ",", "a"}], "]"}]}], ",", 
+       "\[IndentingNewLine]", "\[IndentingNewLine]", "True", ",", 
+       RowBox[{"Message", "[", 
+        RowBox[{
+         RowBox[{"Tensors", "::", "coordsunknown"}], ",", "system"}], "]"}]}],
+       "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]", "]"}]}], 
+  ";"}]], "Input",
+ CellChangeTimes->{{3.5128962860950413`*^9, 3.512896323803575*^9}, {
+  3.512896360574967*^9, 3.512896420026836*^9}, {3.51289645318738*^9, 
+  3.512896523488935*^9}, {3.512896577337872*^9, 3.512896584456307*^9}, {
+  3.512897115675398*^9, 3.512897200309655*^9}, {3.512897455844528*^9, 
+  3.512897498835876*^9}},
+ CellLabel->"In[29]:=",ExpressionUUID->"d3d7b64e-5d4f-4cfe-8019-37df0aca8a9f"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"GetCoordinates", "[", "]"}], ":=", "Tensors`Coords"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"GetMetricTensor", "[", "]"}], ":=", "Tensors`MetricUU"}], 
+  ";"}]}], "Input",
+ CellChangeTimes->{{3.512897318584017*^9, 3.512897353933262*^9}},
+ CellLabel->"In[30]:=",ExpressionUUID->"f1c508b9-dcd8-48c4-b8b3-973955abe2a0"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Basic functionality", "Subsection",
+ CellChangeTimes->{{3.51288096233179*^9, 
+  3.5128809668036547`*^9}},ExpressionUUID->"9ac3f861-4ce4-4ece-ae01-\
+578deb4ac249"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"MakeTensor", "[", 
+    RowBox[{"array_", ",", 
+     RowBox[{"covariant_", ":", "True"}]}], "]"}], ":=", 
+   RowBox[{"Tensor", "[", "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"ConstantArray", "[", 
+      RowBox[{"covariant", ",", 
+       RowBox[{"ArrayDepth", "[", "array", "]"}]}], "]"}], ",", 
+     "\[IndentingNewLine]", "array"}], "\[IndentingNewLine]", "]"}]}], 
+  ";"}]], "Input",
+ CellChangeTimes->{{3.512880166282989*^9, 3.512880256025112*^9}, {
+  3.512880430880269*^9, 3.51288048676865*^9}, {3.512880529299631*^9, 
+  3.5128805605871696`*^9}, {3.5128807828470707`*^9, 3.512880796704344*^9}},
+ CellLabel->"In[32]:=",ExpressionUUID->"ca24da7f-c870-4f96-b767-9f62e7648633"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"Rank", "[", "tensor_Tensor", "]"}], ":=", 
+   RowBox[{"Length", "[", 
+    RowBox[{"tensor", "[", 
+     RowBox[{"[", "1", "]"}], "]"}], "]"}]}], ";"}]], "Input",
+ CellChangeTimes->{{3.512881131508634*^9, 3.512881144919312*^9}, {
+  3.5128815473897457`*^9, 3.512881547697885*^9}},
+ CellLabel->"In[33]:=",ExpressionUUID->"a4e87f1d-2f3b-40ff-bd9c-97fd297d507d"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"CovariantQ", "[", 
+    RowBox[{"tensor_Tensor", ",", 
+     RowBox[{"id_", ":", "All"}]}], "]"}], ":=", 
+   RowBox[{"If", "[", "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"id", "===", "All"}], ",", 
+     RowBox[{"Apply", "[", 
+      RowBox[{"And", ",", 
+       RowBox[{"tensor", "[", 
+        RowBox[{"[", "1", "]"}], "]"}]}], "]"}], ",", "\[IndentingNewLine]", 
+     RowBox[{"tensor", "[", 
+      RowBox[{"[", 
+       RowBox[{"1", ",", "id"}], "]"}], "]"}]}], "\[IndentingNewLine]", 
+    "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"ContravariantQ", "[", 
+    RowBox[{"tensor_Tensor", ",", 
+     RowBox[{"id_", ":", "All"}]}], "]"}], ":=", 
+   RowBox[{"If", "[", "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"id", "===", "All"}], ",", 
+     RowBox[{"Not", "[", 
+      RowBox[{"Apply", "[", 
+       RowBox[{"Or", ",", 
+        RowBox[{"tensor", "[", 
+         RowBox[{"[", "1", "]"}], "]"}]}], "]"}], "]"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"Not", "[", 
+       RowBox[{"tensor", "[", 
+        RowBox[{"[", 
+         RowBox[{"1", ",", "id"}], "]"}], "]"}], "]"}], ";"}]}], 
+    "\[IndentingNewLine]", "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"MixedQ", "[", "tensor_Tensor", "]"}], ":=", 
+   RowBox[{"Not", "[", 
+    RowBox[{
+     RowBox[{"CovariantQ", "[", "tensor", "]"}], "||", 
+     RowBox[{"ContravariantQ", "[", "tensor", "]"}]}], "]"}]}], 
+  ";"}]}], "Input",
+ CellChangeTimes->{{3.512880166282989*^9, 3.512880256025112*^9}, {
+  3.512880430880269*^9, 3.51288048676865*^9}, {3.512880529299631*^9, 
+  3.5128805605871696`*^9}, {3.5128807828470707`*^9, 3.512880796704344*^9}, {
+  3.512883626087928*^9, 3.512883689092733*^9}, {3.512886025645838*^9, 
+  3.512886029483206*^9}},
+ CellLabel->"In[34]:=",ExpressionUUID->"40620ac0-51f7-49de-bfa4-8e38104e1a12"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"Unprotect", "[", 
+   RowBox[{"Normal", ",", "VectorQ", ",", "MatrixQ"}], "]"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"Normal", "[", "tensor_Tensor", "]"}], ":=", 
+   RowBox[{"tensor", "[", 
+    RowBox[{"[", "2", "]"}], "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"ScalarQ", "[", "tensor_Tensor", "]"}], ":=", 
+   RowBox[{
+    RowBox[{"Rank", "[", "tensor", "]"}], "\[Equal]", "0"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"VectorQ", "[", "tensor_Tensor", "]"}], ":=", 
+   RowBox[{
+    RowBox[{"Rank", "[", "tensor", "]"}], "\[Equal]", "1"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"MatrixQ", "[", "tensor_Tensor", "]"}], ":=", 
+   RowBox[{
+    RowBox[{"Rank", "[", "tensor", "]"}], "\[Equal]", "2"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"Protect", "[", 
+   RowBox[{"Normal", ",", "VectorQ", ",", "MatrixQ"}], "]"}], ";"}]}], "Input",\
+
+ CellChangeTimes->{{3.512880058180272*^9, 3.5128800956999683`*^9}, {
+   3.512880647471202*^9, 3.5128806815175257`*^9}, 3.512880789447131*^9, {
+   3.512881149228867*^9, 3.512881169759522*^9}, {3.512881551308206*^9, 
+   3.512881554011508*^9}, {3.5128825840473824`*^9, 3.512882595161233*^9}},
+ CellLabel->"In[37]:=",ExpressionUUID->"dddd191f-b133-4525-9e41-1227e6d3e4af"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Index operations", "Subsection",
+ CellChangeTimes->{{3.512881578454362*^9, 
+  3.5128815803301973`*^9}},ExpressionUUID->"98ccd747-f355-474c-b324-\
+d4bf87d03c6e"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"TensorMetricMultiplication", "[", 
+    RowBox[{"tensorData_", ",", "metric_", ",", "id_"}], "]"}], ":=", 
+   RowBox[{"Module", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"k", ",", "l"}], "}"}], ",", "\[IndentingNewLine]", 
+     RowBox[{"If", "[", 
+      RowBox[{
+       RowBox[{"id", "\[Equal]", "1"}], ",", "\[IndentingNewLine]", 
+       RowBox[{"Table", "[", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"Sum", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"tensorData", "[", 
+             RowBox[{"[", "k", "]"}], "]"}], "*", 
+            RowBox[{"metric", "[", 
+             RowBox[{"[", 
+              RowBox[{"k", ",", "l"}], "]"}], "]"}]}], ",", 
+           RowBox[{"{", 
+            RowBox[{"k", ",", "3"}], "}"}]}], "]"}], "\[IndentingNewLine]", 
+         ",", 
+         RowBox[{"{", 
+          RowBox[{"l", ",", "3"}], "}"}]}], "\[IndentingNewLine]", "]"}], 
+       "\[IndentingNewLine]", ",", 
+       RowBox[{"(*", " ", 
+        RowBox[{"else", ":", " ", 
+         RowBox[{"id", ">", "1"}]}], " ", "*)"}], "\[IndentingNewLine]", 
+       RowBox[{"Map", "[", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"Table", "[", "\[IndentingNewLine]", 
+           RowBox[{
+            RowBox[{"Sum", "[", 
+             RowBox[{
+              RowBox[{
+               RowBox[{"#", "[", 
+                RowBox[{"[", "k", "]"}], "]"}], "*", 
+               RowBox[{"metric", "[", 
+                RowBox[{"[", 
+                 RowBox[{"k", ",", "l"}], "]"}], "]"}]}], ",", 
+              RowBox[{"{", 
+               RowBox[{"k", ",", "3"}], "}"}]}], "]"}], "\[IndentingNewLine]",
+             ",", 
+            RowBox[{"{", 
+             RowBox[{"l", ",", "3"}], "}"}]}], "\[IndentingNewLine]", "]"}], 
+          "&"}], ",", "\[IndentingNewLine]", "tensorData", ",", 
+         RowBox[{"id", "-", "1"}]}], "\[IndentingNewLine]", "]"}]}], 
+      "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]", "]"}]}], 
+  ";"}]], "Input",
+ CellChangeTimes->{{3.51288178009686*^9, 3.512881937467883*^9}, {
+   3.51288202183426*^9, 3.512882028795014*^9}, 3.5128820875681047`*^9, {
+   3.512882188766242*^9, 3.5128821888760443`*^9}, {3.512882236579578*^9, 
+   3.512882236638371*^9}, {3.5128823025681057`*^9, 3.512882317212995*^9}, {
+   3.512882381091289*^9, 3.512882438234479*^9}, {3.512882485427238*^9, 
+   3.512882526726492*^9}},
+ CellLabel->"In[43]:=",ExpressionUUID->"942df911-64bd-465a-9a80-bbf7834b613d"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"RaiseIndex", "[", 
+    RowBox[{"tensor_Tensor", ",", "id_Integer"}], "]"}], ":=", 
+   RowBox[{"Module", "[", 
+    RowBox[{
+     RowBox[{"{", "signature", "}"}], ",", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"signature", "=", 
+       RowBox[{"tensor", "[", 
+        RowBox[{"[", "1", "]"}], "]"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"If", "[", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"signature", "[", 
+         RowBox[{"[", "id", "]"}], "]"}], ",", "tensor", ",", 
+        "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"signature", "[", 
+           RowBox[{"[", "id", "]"}], "]"}], "=", "True"}], ";", 
+         "\[IndentingNewLine]", 
+         RowBox[{"Tensor", "[", 
+          RowBox[{"signature", ",", "\[IndentingNewLine]", 
+           RowBox[{"TensorMetricMultiplication", "[", 
+            RowBox[{
+             RowBox[{"tensor", "[", 
+              RowBox[{"[", "2", "]"}], "]"}], ",", "Tensors`MetricUU", ",", 
+             "id"}], "]"}]}], "\[IndentingNewLine]", "]"}]}]}], 
+       "\[IndentingNewLine]", "]"}]}]}], "\[IndentingNewLine]", "]"}]}], 
+  ";"}]], "Input",
+ CellChangeTimes->{{3.5128815839442787`*^9, 3.512881585192728*^9}, {
+   3.5128816575618677`*^9, 3.512881668663137*^9}, {3.512881716528956*^9, 
+   3.512881739087021*^9}, {3.512881949708308*^9, 3.512882055393495*^9}, {
+   3.512882710207213*^9, 3.5128827127560453`*^9}, 3.512887044081482*^9},
+ CellLabel->"In[44]:=",ExpressionUUID->"777dda01-6332-4ebd-b1d2-be3ffa2cbac1"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"LowerIndex", "[", 
+    RowBox[{"tensor_Tensor", ",", "id_Integer"}], "]"}], ":=", 
+   RowBox[{"Module", "[", 
+    RowBox[{
+     RowBox[{"{", "signature", "}"}], ",", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"signature", "=", 
+       RowBox[{"tensor", "[", 
+        RowBox[{"[", "1", "]"}], "]"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"If", "[", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"Not", "[", 
+         RowBox[{"signature", "[", 
+          RowBox[{"[", "id", "]"}], "]"}], "]"}], ",", "tensor", ",", 
+        "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"signature", "[", 
+           RowBox[{"[", "id", "]"}], "]"}], "=", "False"}], ";", 
+         "\[IndentingNewLine]", 
+         RowBox[{"Tensor", "[", 
+          RowBox[{"signature", ",", "\[IndentingNewLine]", 
+           RowBox[{"TensorMetricMultiplication", "[", 
+            RowBox[{
+             RowBox[{"tensor", "[", 
+              RowBox[{"[", "2", "]"}], "]"}], ",", "Tensors`MetricDD", ",", 
+             "id"}], "]"}]}], "\[IndentingNewLine]", "]"}]}]}], 
+       "\[IndentingNewLine]", "]"}]}]}], "\[IndentingNewLine]", "]"}]}], 
+  ";"}]], "Input",
+ CellChangeTimes->{{3.5128815839442787`*^9, 3.512881585192728*^9}, {
+   3.5128816575618677`*^9, 3.512881668663137*^9}, {3.512881716528956*^9, 
+   3.512881739087021*^9}, {3.512881949708308*^9, 3.512882075536915*^9}, {
+   3.512882715166814*^9, 3.5128827169158792`*^9}, 3.51288704628666*^9},
+ CellLabel->"In[45]:=",ExpressionUUID->"8d9ba03a-a6e2-4a31-a236-cd1eeb1544be"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Arithmetic functionality", "Subsection",
+ CellChangeTimes->{{3.5128809762907124`*^9, 
+  3.512880982993734*^9}},ExpressionUUID->"9d5a448e-1076-47bb-aad1-\
+fdfbe0c0e8aa"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"ScaleTensor", "[", 
+    RowBox[{"tensor_Tensor", ",", "scalar_"}], "]"}], ":=", 
+   RowBox[{"Tensor", "[", 
+    RowBox[{
+     RowBox[{"tensor", "[", 
+      RowBox[{"[", "1", "]"}], "]"}], ",", 
+     RowBox[{"scalar", "*", 
+      RowBox[{"tensor", "[", 
+       RowBox[{"[", "2", "]"}], "]"}]}]}], "]"}]}], ";"}]], "Input",
+ CellChangeTimes->{{3.512886823222114*^9, 3.512886852655657*^9}},
+ CellLabel->"In[46]:=",ExpressionUUID->"3b915c09-f6f1-4d3d-b7ff-a27330675478"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"TensorProduct", "[", 
+    RowBox[{"tensor1_Tensor", ",", "tensor2_Tensor"}], "]"}], ":=", 
+   "\[IndentingNewLine]", 
+   RowBox[{"Which", "[", "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"ScalarQ", "[", "tensor1", "]"}], ",", 
+     RowBox[{"ScaleTensor", "[", 
+      RowBox[{"tensor2", ",", 
+       RowBox[{"tensor1", "[", 
+        RowBox[{"[", "2", "]"}], "]"}]}], "]"}], ",", "\[IndentingNewLine]", 
+     RowBox[{"ScalarQ", "[", "tensor2", "]"}], ",", 
+     RowBox[{"ScaleTensor", "[", 
+      RowBox[{"tensor1", ",", 
+       RowBox[{"tensor2", "[", 
+        RowBox[{"[", "2", "]"}], "]"}]}], "]"}], ",", "\[IndentingNewLine]", 
+     "True", ",", 
+     RowBox[{"Tensor", "[", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"Join", "[", 
+        RowBox[{
+         RowBox[{"tensor1", "[", 
+          RowBox[{"[", "1", "]"}], "]"}], ",", 
+         RowBox[{"tensor2", "[", 
+          RowBox[{"[", "1", "]"}], "]"}]}], "]"}], ",", "\[IndentingNewLine]", 
+       RowBox[{"Outer", "[", 
+        RowBox[{"Times", ",", 
+         RowBox[{"tensor1", "[", 
+          RowBox[{"[", "2", "]"}], "]"}], ",", 
+         RowBox[{"tensor2", "[", 
+          RowBox[{"[", "2", "]"}], "]"}]}], "]"}]}], "\[IndentingNewLine]", 
+      "]"}]}], "\[IndentingNewLine]", "]"}]}], ";"}]], "Input",
+ CellChangeTimes->{{3.512881031268992*^9, 3.5128811211282797`*^9}, {
+  3.512881182089322*^9, 3.512881200031307*^9}, {3.5128815581112957`*^9, 
+  3.51288155848582*^9}, {3.512882746525858*^9, 3.5128827477482443`*^9}, {
+  3.512884824139441*^9, 3.512884844552764*^9}, {3.51288489364074*^9, 
+  3.512884893855551*^9}, {3.512886734312643*^9, 3.5128867358121367`*^9}, {
+  3.5128867896279373`*^9, 3.512886822114971*^9}, {3.512886857065814*^9, 
+  3.512886886186474*^9}},
+ CellLabel->"In[47]:=",ExpressionUUID->"c58da438-72e8-4b33-b5e6-180ffcf5829c"],
+
+Cell[BoxData[
+ TemplateBox[{
+  "SetDelayed", "write", 
+   "\"Tag \\!\\(\\*RowBox[{\\\"TensorProduct\\\"}]\\) in \
+\\!\\(\\*RowBox[{\\\"tensor1_Tensor\\\", \\\"\[TensorProduct]\\\", \
+\\\"tensor2_Tensor\\\"}]\\) is Protected.\"", 2, 47, 2, 27629032233978641350, 
+   "Local"},
+  "MessageTemplate"]], "Message", "MSG",
+ CellChangeTimes->{3.814674909009177*^9},
+ CellLabel->
+  "During evaluation of \
+In[47]:=",ExpressionUUID->"79ffb7d5-237f-405a-b578-26cc816ba965"]
+}, Open  ]],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"Contract", "[", 
+    RowBox[{"tensor_Tensor", ",", "id1_Integer", ",", "id2_Integer"}], "]"}], 
+   ":=", 
+   RowBox[{"Module", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"ids", ",", "data"}], "}"}], ",", "\[IndentingNewLine]", 
+     RowBox[{"(*", " ", "Check", " ", "*)"}], "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{"id1", "\[Equal]", "id2"}], ",", 
+        RowBox[{"Message", "[", 
+         RowBox[{"Tensors", "::", "sameidx"}], "]"}]}], "]"}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"Max", "[", 
+          RowBox[{"id1", ",", "id2"}], "]"}], ">", 
+         RowBox[{"Rank", "[", "tensor", "]"}]}], ",", 
+        RowBox[{"Message", "[", 
+         RowBox[{"Tensors", "::", "dimlow"}], "]"}]}], "]"}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"(*", " ", 
+       RowBox[{"Check", " ", "type", " ", "of", " ", "indices"}], " ", "*)"}],
+       "\[IndentingNewLine]", 
+      RowBox[{"data", "=", 
+       RowBox[{"Which", "[", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"CovariantQ", "[", 
+           RowBox[{"tensor", ",", "id1"}], "]"}], "&&", 
+          RowBox[{"CovariantQ", "[", 
+           RowBox[{"tensor", ",", "id2"}], "]"}]}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"LowerIndex", "[", 
+           RowBox[{"tensor", ",", "id2"}], "]"}], "[", 
+          RowBox[{"[", "2", "]"}], "]"}], ",", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"ContravariantQ", "[", 
+           RowBox[{"tensor", ",", "id1"}], "]"}], "&&", 
+          RowBox[{"ContravariantQ", "[", 
+           RowBox[{"tensor", ",", "id2"}], "]"}]}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"RaiseIndex", "[", 
+           RowBox[{"tensor", ",", "id2"}], "]"}], "[", 
+          RowBox[{"[", "2", "]"}], "]"}], ",", "\[IndentingNewLine]", "True", 
+         ",", "\[IndentingNewLine]", 
+         RowBox[{"tensor", "[", 
+          RowBox[{"[", "2", "]"}], "]"}]}], "\[IndentingNewLine]", "]"}]}], 
+      ";", "\[IndentingNewLine]", 
+      RowBox[{"(*", " ", 
+       RowBox[{
+        RowBox[{"Reorder", " ", "the", " ", "indices"}], ",", " ", 
+        RowBox[{
+        "such", " ", "that", " ", "id1", " ", "and", " ", "id2", " ", "are", 
+         " ", "the", " ", "first"}]}], " ", "*)"}], "\[IndentingNewLine]", 
+      RowBox[{"ids", "=", 
+       RowBox[{"Range", "[", 
+        RowBox[{"Rank", "[", "tensor", "]"}], "]"}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"ids", "=", 
+       RowBox[{"Delete", "[", 
+        RowBox[{"ids", ",", 
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"{", "id1", "}"}], ",", 
+           RowBox[{"{", "id2", "}"}]}], "}"}]}], "]"}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"ids", "=", 
+       RowBox[{"Join", "[", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{"id1", ",", "id2"}], "}"}], ",", "ids"}], "]"}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"data", "=", 
+       RowBox[{"Transpose", "[", 
+        RowBox[{"data", ",", "ids"}], "]"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"(*", " ", 
+       RowBox[{"Do", " ", "the", " ", "contraction"}], " ", "*)"}], 
+      "\[IndentingNewLine]", 
+      RowBox[{"data", "=", 
+       RowBox[{"Tr", "[", 
+        RowBox[{"data", ",", "Plus", ",", "2"}], "]"}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"(*", " ", 
+       RowBox[{
+       "Revert", " ", "the", " ", "order", " ", "of", " ", "the", " ", 
+        "indices"}], " ", "*)"}], "\[IndentingNewLine]", 
+      RowBox[{"Tensor", "[", 
+       RowBox[{
+        RowBox[{"Delete", "[", 
+         RowBox[{
+          RowBox[{"tensor", "[", 
+           RowBox[{"[", "1", "]"}], "]"}], ",", 
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"{", "id1", "}"}], ",", 
+            RowBox[{"{", "id2", "}"}]}], "}"}]}], "]"}], ",", "data"}], 
+       "]"}]}]}], "\[IndentingNewLine]", "]"}]}], ";"}]], "Input",
+ CellChangeTimes->{{3.512880988963379*^9, 3.512881030554991*^9}, {
+  3.512881223921068*^9, 3.5128812291402397`*^9}, {3.512881321493078*^9, 
+  3.51288141449187*^9}, {3.512881486523818*^9, 3.512881512254505*^9}, {
+  3.51288156162381*^9, 3.512881562012547*^9}, {3.512883497489704*^9, 
+  3.512883619431589*^9}, {3.5128837024649973`*^9, 3.5128838401436157`*^9}, {
+  3.512883918078059*^9, 3.512883983256339*^9}, {3.512885163010777*^9, 
+  3.512885175075973*^9}, {3.512885234851387*^9, 3.5128853535643063`*^9}, {
+  3.512885464179529*^9, 3.512885583368143*^9}, {3.51288565977837*^9, 
+  3.5128856671017437`*^9}, {3.512885743959189*^9, 3.512885749483512*^9}, {
+  3.512886047109777*^9, 3.512886122248414*^9}, {3.5128951483615227`*^9, 
+  3.5128952050280247`*^9}, {3.512895544823111*^9, 3.512895545814774*^9}},
+ CellLabel->"In[48]:=",ExpressionUUID->"a525b480-daec-4bb7-9baa-33acd5396916"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Calculus", "Subsection",
+ CellChangeTimes->{{3.5128949469602757`*^9, 
+  3.51289495001495*^9}},ExpressionUUID->"3ee3f138-3eaa-463c-ba9b-\
+a0d8967398f7"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"DCovariantScalar", "[", 
+    RowBox[{"scalar_Tensor", "?", "ScalarQ"}], "]"}], ":=", 
+   RowBox[{"Map", "[", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"D", "[", 
+       RowBox[{
+        RowBox[{"scalar", "[", 
+         RowBox[{"[", "2", "]"}], "]"}], ",", "#"}], "]"}], "&"}], ",", 
+     "Tensors`Coords"}], "]"}]}], ";"}]], "Input",
+ CellChangeTimes->{{3.512895697223914*^9, 3.512895753123941*^9}, {
+  3.5128957916192827`*^9, 3.512895797544395*^9}},
+ CellLabel->"In[49]:=",ExpressionUUID->"866ba58d-656f-49df-8c24-4bcc961d2b5c"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"DCovariantVector", "[", 
+    RowBox[{"vector_Tensor", "?", "VectorQ"}], "]"}], ":=", 
+   RowBox[{"Module", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"k", ",", "l", ",", "n", ",", "data"}], "}"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"data", "=", 
+       RowBox[{"If", "[", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"CovariantQ", "[", "vector", "]"}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{"Table", "[", "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"D", "[", 
+             RowBox[{
+              RowBox[{"vector", "[", 
+               RowBox[{"[", 
+                RowBox[{"2", ",", "l"}], "]"}], "]"}], ",", 
+              RowBox[{"Tensors`Coords", "[", 
+               RowBox[{"[", "k", "]"}], "]"}]}], "]"}], "\[IndentingNewLine]",
+             "+", 
+            RowBox[{"Sum", "[", 
+             RowBox[{
+              RowBox[{
+               RowBox[{"Tensors`Christoffel", "[", 
+                RowBox[{"[", 
+                 RowBox[{"l", ",", "k", ",", "n"}], "]"}], "]"}], "*", 
+               RowBox[{"vector", "[", 
+                RowBox[{"[", 
+                 RowBox[{"2", ",", "n"}], "]"}], "]"}]}], ",", 
+              RowBox[{"{", 
+               RowBox[{"n", ",", "Tensors`Dimension"}], "}"}]}], "]"}]}], 
+           "\[IndentingNewLine]", ",", 
+           RowBox[{"{", 
+            RowBox[{"l", ",", "Tensors`Dimension"}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{"k", ",", "Tensors`Dimension"}], "}"}]}], 
+          "\[IndentingNewLine]", "]"}], "\[IndentingNewLine]", ",", 
+         RowBox[{"(*", " ", 
+          RowBox[{"else", ":", " ", 
+           RowBox[{"contravariant", " ", "vector"}]}], " ", "*)"}], 
+         "\[IndentingNewLine]", 
+         RowBox[{"Table", "[", "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"D", "[", 
+             RowBox[{
+              RowBox[{"vector", "[", 
+               RowBox[{"[", 
+                RowBox[{"2", ",", "l"}], "]"}], "]"}], ",", 
+              RowBox[{"Tensors`Coords", "[", 
+               RowBox[{"[", "k", "]"}], "]"}]}], "]"}], "\[IndentingNewLine]",
+             "-", 
+            RowBox[{"Sum", "[", 
+             RowBox[{
+              RowBox[{
+               RowBox[{"Tensors`Christoffel", "[", 
+                RowBox[{"[", 
+                 RowBox[{"n", ",", "k", ",", "l"}], "]"}], "]"}], "*", 
+               RowBox[{"vector", "[", 
+                RowBox[{"[", 
+                 RowBox[{"2", ",", "n"}], "]"}], "]"}]}], ",", 
+              RowBox[{"{", 
+               RowBox[{"n", ",", "Tensors`Dimension"}], "}"}]}], "]"}]}], 
+           "\[IndentingNewLine]", ",", 
+           RowBox[{"{", 
+            RowBox[{"l", ",", "Tensors`Dimension"}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{"k", ",", "Tensors`Dimension"}], "}"}]}], 
+          "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]", "]"}]}], ";",
+       "\[IndentingNewLine]", 
+      RowBox[{"Tensor", "[", 
+       RowBox[{
+        RowBox[{"Append", "[", 
+         RowBox[{
+          RowBox[{"vector", "[", 
+           RowBox[{"[", "1", "]"}], "]"}], ",", "True"}], "]"}], ",", 
+        "data"}], "]"}]}]}], "\[IndentingNewLine]", "]"}]}], ";"}]], "Input",
+ CellChangeTimes->{{3.5128957691576843`*^9, 3.512895962869533*^9}},
+ CellLabel->"In[50]:=",ExpressionUUID->"976b6dca-f422-4622-b3d9-a4247d9a4ae3"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"DCovariantMatrix", "[", 
+    RowBox[{"matrix_Tensor", "?", "MatrixQ"}], "]"}], ":=", 
+   RowBox[{"Module", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"m", "=", "matrix"}], ",", "data"}], "}"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{"ContravariantQ", "[", 
+         RowBox[{"matrix", ",", "1"}], "]"}], ",", 
+        RowBox[{"m", "=", 
+         RowBox[{"RaiseIndex", "[", 
+          RowBox[{"matrix", ",", "1"}], "]"}]}]}], "]"}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{"ContravariantQ", "[", 
+         RowBox[{"matrix", ",", "2"}], "]"}], ",", 
+        RowBox[{"m", "=", 
+         RowBox[{"RaiseIndex", "[", 
+          RowBox[{"matrix", ",", "2"}], "]"}]}]}], "]"}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"Table", "[", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"D", "[", 
+          RowBox[{
+           RowBox[{"matrix", "[", 
+            RowBox[{"[", 
+             RowBox[{"2", ",", "n", ",", "p"}], "]"}], "]"}], ",", 
+           RowBox[{"Tensors`Coords", "[", 
+            RowBox[{"[", "l", "]"}], "]"}]}], "]"}], "\[IndentingNewLine]", 
+         "+", 
+         RowBox[{"Sum", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"Tensors`Christoffel", "[", 
+             RowBox[{"n", ",", "l", ",", "r"}], "]"}], "*", 
+            RowBox[{"matrix", "[", 
+             RowBox[{"[", 
+              RowBox[{"2", ",", "r", ",", "p"}], "]"}], "]"}]}], ",", 
+           RowBox[{"{", 
+            RowBox[{"r", ",", "Tensors`Dimension"}], "}"}]}], "]"}], 
+         "\[IndentingNewLine]", "+", 
+         RowBox[{"Sum", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"Tensors`Christoffel", "[", 
+             RowBox[{"p", ",", "l", ",", "r"}], "]"}], "*", 
+            RowBox[{"matrix", "[", 
+             RowBox[{"[", 
+              RowBox[{"2", ",", "n", ",", "r"}], "]"}], "]"}]}], ",", 
+           RowBox[{"{", 
+            RowBox[{"r", ",", "Tensors`Dimension"}], "}"}]}], "]"}]}], 
+        "\[IndentingNewLine]", ",", 
+        RowBox[{"{", 
+         RowBox[{"n", ",", "Tensors`Dimension"}], "}"}], ",", 
+        RowBox[{"{", 
+         RowBox[{"p", ",", "Tensors`Dimension"}], "}"}], ",", 
+        RowBox[{"{", 
+         RowBox[{"l", ",", "Tensors`Dimension"}], "}"}]}], 
+       "\[IndentingNewLine]", "]"}]}]}], "\[IndentingNewLine]", "]"}]}], 
+  ";"}]], "Input",
+ CellChangeTimes->{{3.512895984076412*^9, 3.51289605103091*^9}, {
+  3.512896124763171*^9, 3.512896215823904*^9}},
+ CellLabel->"In[51]:=",ExpressionUUID->"62679fd0-b50b-4a1d-9526-7c00ef3c5683"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"DCovariant", "[", "tensor_Tensor", "]"}], ":=", 
+   RowBox[{"Which", "[", "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"ScalarQ", "[", "tensor", "]"}], ",", 
+     RowBox[{"DCovariantScalar", "[", "tensor", "]"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{"VectorQ", "[", "tensor", "]"}], ",", 
+     RowBox[{"DCovariantVector", "[", "tensor", "]"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{"MatrixQ", "[", "tensor", "]"}], ",", 
+     RowBox[{"DCovariantMatrix", "[", "tensor", "]"}], ",", 
+     "\[IndentingNewLine]", "True", ",", 
+     RowBox[{"Message", "[", 
+      RowBox[{"Tensors", "::", "rankhigh"}], "]"}]}], "\[IndentingNewLine]", 
+    "]"}]}], ";"}]], "Input",
+ CellChangeTimes->{{3.512894968762473*^9, 3.512894991247669*^9}, {
+  3.512895563699963*^9, 3.5128956542403507`*^9}},
+ CellLabel->"In[52]:=",ExpressionUUID->"9d24d0ab-ba1e-461c-9368-18f7dc507be1"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Test Cases", "Subsection",
+ CellChangeTimes->{{3.512821712944838*^9, 
+  3.512821716861899*^9}},ExpressionUUID->"27046f94-fb02-489b-9ed8-\
+a48bd845b072"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"TestFunctionsArg1", "=", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"Sin", "[", "#", "]"}], "&"}], ",", 
+     RowBox[{
+      RowBox[{"#", "^", "2"}], "&"}], ",", 
+     RowBox[{
+      RowBox[{"Sqrt", "[", "#", "]"}], "&"}]}], "}"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"TestFunctionsArg2", "=", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"#1", "+", "#2"}], "&"}], ",", 
+     RowBox[{
+      RowBox[{"#1", "*", "#2"}], "&"}]}], "}"}]}], ";"}]}], "Input",
+ CellChangeTimes->{{3.512821738869976*^9, 3.5128217589972467`*^9}, {
+  3.5128218951494093`*^9, 3.51282191153271*^9}},
+ CellLabel->"In[53]:=",ExpressionUUID->"be3aa69e-d8b2-4388-9ea2-ffc188e00690"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"TestScalar", "[", 
+    RowBox[{"depth_", ":", "0"}], "]"}], ":=", 
+   RowBox[{"Module", "[", 
+    RowBox[{
+     RowBox[{"{", "p", "}"}], ",", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"p", "=", 
+       RowBox[{"depth", "*", 
+        RowBox[{"RandomReal", "[", "]"}]}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"FullSimplify", "[", 
+       RowBox[{"Piecewise", "[", 
+        RowBox[{
+         RowBox[{"{", "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{"{", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"RandomChoice", "[", "TestFunctionsArg2", "]"}], "@@", 
+              RowBox[{"{", 
+               RowBox[{
+                RowBox[{"TestScalar", "[", 
+                 RowBox[{"depth", "+", "1"}], "]"}], ",", 
+                RowBox[{"TestScalar", "[", 
+                 RowBox[{"depth", "+", "1"}], "]"}]}], "}"}]}], ",", 
+             RowBox[{"p", "<", ".5"}]}], "}"}], ",", "\[IndentingNewLine]", 
+           RowBox[{"{", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"RandomChoice", "[", "TestFunctionsArg1", "]"}], "@", 
+              RowBox[{"TestScalar", "[", 
+               RowBox[{"depth", "+", "1"}], "]"}]}], ",", 
+             RowBox[{"p", "<", "1"}]}], "}"}]}], "}"}], ",", 
+         RowBox[{"RandomChoice", "[", 
+          RowBox[{"Join", "[", 
+           RowBox[{
+            RowBox[{"{", 
+             RowBox[{"1", ",", "2"}], "}"}], ",", "Tensors`Coords"}], "]"}], 
+          "\[IndentingNewLine]", "]"}]}], "]"}], "\[IndentingNewLine]", 
+       "]"}]}]}], "\[IndentingNewLine]", "]"}]}], ";"}]], "Input",
+ CellChangeTimes->{{3.512821721465012*^9, 3.512821734997986*^9}, {
+  3.51282177332336*^9, 3.51282188322583*^9}, {3.5128219365000973`*^9, 
+  3.5128221312157516`*^9}, {3.512822197989657*^9, 3.512822297520742*^9}, {
+  3.512822336544285*^9, 3.512822355682802*^9}, {3.512822403833476*^9, 
+  3.5128224559455433`*^9}, {3.512822507871014*^9, 3.512822526517623*^9}, {
+  3.512823626236457*^9, 3.5128236570145493`*^9}, {3.5128967459349213`*^9, 
+  3.512896761522945*^9}, {3.512896962736864*^9, 3.512896964735628*^9}},
+ CellLabel->"In[55]:=",ExpressionUUID->"18cfbf10-d997-47c1-b941-8a0335a1097c"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"TestTensorData", "[", "rank_Integer", "]"}], ":=", 
+   RowBox[{"Module", "[", 
+    RowBox[{
+     RowBox[{"{", "k", "}"}], ",", "\[IndentingNewLine]", 
+     RowBox[{"If", "[", 
+      RowBox[{
+       RowBox[{"rank", "\[Equal]", "0"}], ",", "\[IndentingNewLine]", 
+       RowBox[{"TestScalar", "[", "]"}], "\[IndentingNewLine]", ",", 
+       RowBox[{"(*", " ", 
+        RowBox[{"else", ":", " ", 
+         RowBox[{"rank", " ", ">", " ", "0"}]}], " ", "*)"}], 
+       "\[IndentingNewLine]", 
+       RowBox[{"Table", "[", 
+        RowBox[{
+         RowBox[{"TestTensorData", "[", 
+          RowBox[{"rank", "-", "1"}], "]"}], ",", 
+         RowBox[{"{", 
+          RowBox[{"k", ",", "Tensors`Dimension"}], "}"}]}], "]"}]}], 
+      "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]", "]"}]}], 
+  ";"}]], "Input",
+ CellChangeTimes->{{3.512822468901119*^9, 3.5128225153674927`*^9}, {
+  3.512896659723566*^9, 3.5128967279743958`*^9}, {3.512896773445827*^9, 
+  3.512896837710249*^9}},
+ CellLabel->"In[56]:=",ExpressionUUID->"cb8982b0-c8f0-4edb-bba8-41fe5b0d2a72"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"TestTensor", "[", 
+    RowBox[{
+     RowBox[{"rank_Integer", ":", "0"}], ",", 
+     RowBox[{"Numerical_", ":", "True"}]}], "]"}], ":=", 
+   RowBox[{"If", "[", 
+    RowBox[{"Numerical", ",", "\[IndentingNewLine]", 
+     RowBox[{"Tensor", "[", 
+      RowBox[{
+       RowBox[{"ConstantArray", "[", 
+        RowBox[{"True", ",", "rank"}], "]"}], ",", 
+       RowBox[{"RandomReal", "[", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{"0", ",", "1"}], "}"}], ",", 
+         RowBox[{"ConstantArray", "[", 
+          RowBox[{"Tensors`Dimension", ",", "rank"}], "]"}]}], "]"}]}], "]"}],
+      "\[IndentingNewLine]", ",", 
+     RowBox[{"(*", " ", 
+      RowBox[{"else", ":", " ", 
+       RowBox[{"not", " ", "numerical"}]}], " ", "*)"}], 
+     "\[IndentingNewLine]", 
+     RowBox[{"Tensor", "[", 
+      RowBox[{
+       RowBox[{"ConstantArray", "[", 
+        RowBox[{"True", ",", "rank"}], "]"}], ",", 
+       RowBox[{"TestTensorData", "[", "rank", "]"}]}], "]"}]}], 
+    "\[IndentingNewLine]", "]"}]}], ";"}]], "Input",
+ CellChangeTimes->{{3.5128968287450314`*^9, 3.512896948869402*^9}, {
+  3.512896981177404*^9, 3.512896981388895*^9}, {3.512897058972279*^9, 
+  3.512897059760429*^9}},
+ CellLabel->"In[57]:=",ExpressionUUID->"c68afde5-dfa4-4484-b3aa-ad0d3ebdbe25"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"End", "[", 
+   RowBox[{"(*", " ", "Private", " ", "*)"}], "]"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"EndPackage", "[", "]"}], ";"}]}], "Input",
+ CellLabel->"In[58]:=",ExpressionUUID->"8519f36b-2e04-4538-9e00-7f1f7c93f9d7"]
+}, Open  ]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Tests", "Section",
+ CellChangeTimes->{{3.51288049052069*^9, 
+  3.5128804914314003`*^9}},ExpressionUUID->"7cf22073-c3eb-4421-93df-\
+c56b9516b77f"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"s", "=", 
+   RowBox[{"MakeTensor", "[", "3", "]"}]}], ";"}]], "Input",
+ CellChangeTimes->{{3.5128804960733643`*^9, 3.512880505244385*^9}, {
+  3.512880766869122*^9, 3.5128807671758633`*^9}},
+ CellLabel->"In[60]:=",ExpressionUUID->"b0c49258-ef5d-46f7-be6a-a4ddc5c3dfb2"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"ScalarQ", "[", "s", "]"}], "&&", 
+  RowBox[{"Not", "[", 
+   RowBox[{"VectorQ", "[", "s", "]"}], "]"}]}]], "Input",
+ CellChangeTimes->{{3.512880506595337*^9, 3.512880512192562*^9}, {
+  3.512880568711439*^9, 3.512880577732527*^9}},
+ CellLabel->"In[61]:=",ExpressionUUID->"19b75ca4-f65b-445f-9908-e092d3da19d4"],
+
+Cell[BoxData["True"], "Output",
+ CellChangeTimes->{{3.5128805075301943`*^9, 3.5128805125830383`*^9}, {
+   3.5128805646773243`*^9, 3.512880578140606*^9}, 3.512880683672468*^9, 
+   3.512880768155114*^9, 3.5128825366869993`*^9, {3.512882802674552*^9, 
+   3.5128828156417522`*^9}, 3.512885956503784*^9, {3.512886031093053*^9, 
+   3.512886082401132*^9}, {3.5128861133365707`*^9, 3.512886124402215*^9}, 
+   3.512886889923163*^9, 3.51288724459216*^9, {3.512887348480736*^9, 
+   3.5128873592194366`*^9}, 3.5128949348926992`*^9, {3.5128955198449507`*^9, 
+   3.512895547159522*^9}, 3.512895695385028*^9, 3.512896221349103*^9, 
+   3.512896531456194*^9, 3.512896588321993*^9, {3.512896953049623*^9, 
+   3.5128969839224167`*^9}, 3.512897024564866*^9, 3.512897063617991*^9, 
+   3.512897203673953*^9, 3.8146749090982122`*^9},
+ CellLabel->"Out[61]=",ExpressionUUID->"ac13c965-a276-4260-a6f3-76fa5c2c3b78"]
+}, Open  ]],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"v", "=", 
+   RowBox[{"MakeTensor", "[", 
+    RowBox[{"{", 
+     RowBox[{"3", ",", "4", ",", "5"}], "}"}], "]"}]}], ";"}]], "Input",
+ CellChangeTimes->{{3.5128805843029013`*^9, 3.512880602677312*^9}, {
+  3.512880773562235*^9, 3.5128807748717833`*^9}},
+ CellLabel->"In[62]:=",ExpressionUUID->"0fc5a853-425d-40a6-a4ed-b2e91cddc86d"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"Not", "[", 
+   RowBox[{"ScalarQ", "[", "v", "]"}], "]"}], "&&", 
+  RowBox[{"VectorQ", "[", "v", "]"}]}]], "Input",
+ CellChangeTimes->{{3.5128806096156178`*^9, 3.5128806154681683`*^9}},
+ CellLabel->"In[63]:=",ExpressionUUID->"27b21110-2304-4028-bfc9-70c16d0ae1d9"],
+
+Cell[BoxData["True"], "Output",
+ CellChangeTimes->{
+  3.512880615923834*^9, 3.512880684429147*^9, 3.512880775702957*^9, 
+   3.512882536908799*^9, {3.512882802763132*^9, 3.51288281590351*^9}, 
+   3.5128859565809097`*^9, {3.512886031159574*^9, 3.51288608246821*^9}, {
+   3.512886113419197*^9, 3.512886124492035*^9}, 3.5128868900030403`*^9, 
+   3.512887244796774*^9, {3.512887348602084*^9, 3.512887359318695*^9}, 
+   3.512894935122479*^9, {3.512895519950183*^9, 3.512895547243825*^9}, 
+   3.512895695455645*^9, 3.512896221415512*^9, 3.5128965316489897`*^9, 
+   3.512896588386545*^9, {3.5128969531136208`*^9, 3.512896984022213*^9}, 
+   3.512897024664695*^9, 3.512897063785659*^9, 3.512897203741397*^9, 
+   3.8146749091282387`*^9},
+ CellLabel->"Out[63]=",ExpressionUUID->"fe713e6b-0ab2-4c9a-960f-a7eef7f2258a"]
+}, Open  ]]
+}, Open  ]]
+}, Open  ]],
+
+Cell["Spherical Coordinates", "Title",
+ CellChangeTimes->{{3.512879958686405*^9, 
+  3.512879961626135*^9}},ExpressionUUID->"72606189-bd3b-4dc1-81ac-\
+f9c850e505f3"]
+},
+WindowSize->{640, 752},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+PrivateNotebookOptions->{"VersionedStylesheet"->{"Default.nb"[8.] -> False}},
+ShowSelection->True,
+FrontEndVersion->"12.1 for Mac OS X x86 (64-bit) (March 13, 2020)",
+StyleDefinitions->"Default.nb",
+ExpressionUUID->"8d2bfdcc-d507-44e9-9907-fe34d34d7466"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[567, 22, 152, 3, 98, "Title",ExpressionUUID->"8acc041f-e808-42df-9e70-ab99b0053817"],
+Cell[722, 27, 306, 6, 30, "Input",ExpressionUUID->"d8037117-6001-4100-9ae5-12f297dd6a21"],
+Cell[CellGroupData[{
+Cell[1053, 37, 148, 3, 67, "Section",ExpressionUUID->"32f42923-c931-4aa3-b98d-a8eb448bda59"],
+Cell[1204, 42, 671, 16, 136, "Input",ExpressionUUID->"d75073bd-5bd2-42c4-8c90-95b2880fae85"],
+Cell[1878, 60, 980, 27, 157, "Input",ExpressionUUID->"14404bb3-7357-4b16-a146-edd9e4c21037"],
+Cell[2861, 89, 461, 11, 52, "Input",ExpressionUUID->"ae13106e-14b0-4db7-9d7e-fc07885d7a56"],
+Cell[3325, 102, 571, 12, 52, "Input",ExpressionUUID->"554b2703-6a28-4c46-9573-73b74d982de2"],
+Cell[3899, 116, 695, 18, 136, "Input",ExpressionUUID->"06880cd2-5cdb-496c-bfa5-fbcdfc3c2124"],
+Cell[4597, 136, 304, 6, 30, "Input",ExpressionUUID->"44781bb5-33a5-4fe0-a6bc-0bba6a7e8de0"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[4938, 147, 154, 3, 67, "Section",ExpressionUUID->"3b1d3022-a5c7-4b86-965f-83840a2b7b31"],
+Cell[CellGroupData[{
+Cell[5117, 154, 152, 2, 30, "Input",ExpressionUUID->"61239665-dac3-486f-97b0-d4f796bb62d5"],
+Cell[5272, 158, 749, 11, 34, "Output",ExpressionUUID->"1d557faf-d0d4-4235-ac82-0006c838e075"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[6058, 174, 158, 3, 54, "Subsection",ExpressionUUID->"18a1b528-5d24-48ce-a363-208ffe55473e"],
+Cell[6219, 179, 996, 25, 94, "Input",ExpressionUUID->"2fd877d1-88a6-4848-b022-2523156549ed"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[7252, 209, 165, 3, 54, "Subsection",ExpressionUUID->"4ee7cfc9-84b9-4184-b7ef-16b985092afe"],
+Cell[7420, 214, 2191, 54, 241, "Input",ExpressionUUID->"7b463bf2-f7bb-4796-9037-49454fbfaca1"],
+Cell[CellGroupData[{
+Cell[9636, 272, 1633, 31, 241, "Input",ExpressionUUID->"bb9cdf3b-79db-4040-9ef8-6f257f596532"],
+Cell[11272, 305, 686, 14, 42, "Message",ExpressionUUID->"6f6e6652-287a-4ea2-8a53-039f39946aa9"]
+}, Open  ]],
+Cell[11973, 322, 3404, 84, 388, "Input",ExpressionUUID->"d3d7b64e-5d4f-4cfe-8019-37df0aca8a9f"],
+Cell[15380, 408, 393, 10, 52, "Input",ExpressionUUID->"f1c508b9-dcd8-48c4-b8b3-973955abe2a0"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[15810, 423, 168, 3, 54, "Subsection",ExpressionUUID->"9ac3f861-4ce4-4ece-ae01-578deb4ac249"],
+Cell[15981, 428, 731, 16, 94, "Input",ExpressionUUID->"ca24da7f-c870-4f96-b767-9f62e7648633"],
+Cell[16715, 446, 403, 9, 30, "Input",ExpressionUUID->"a4e87f1d-2f3b-40ff-bd9c-97fd297d507d"],
+Cell[17121, 457, 1901, 50, 220, "Input",ExpressionUUID->"40620ac0-51f7-49de-bfa4-8e38104e1a12"],
+Cell[19025, 509, 1375, 36, 136, "Input",ExpressionUUID->"dddd191f-b133-4525-9e41-1227e6d3e4af"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[20437, 550, 166, 3, 54, "Subsection",ExpressionUUID->"98ccd747-f355-474c-b324-d4bf87d03c6e"],
+Cell[20606, 555, 2511, 59, 367, "Input",ExpressionUUID->"942df911-64bd-465a-9a80-bbf7834b613d"],
+Cell[23120, 616, 1560, 35, 241, "Input",ExpressionUUID->"777dda01-6332-4ebd-b1d2-be3ffa2cbac1"],
+Cell[24683, 653, 1598, 36, 241, "Input",ExpressionUUID->"8d9ba03a-a6e2-4a31-a236-cd1eeb1544be"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[26318, 694, 174, 3, 54, "Subsection",ExpressionUUID->"9d5a448e-1076-47bb-aad1-fdfbe0c0e8aa"],
+Cell[26495, 699, 513, 13, 52, "Input",ExpressionUUID->"3b915c09-f6f1-4d3d-b7ff-a27330675478"],
+Cell[CellGroupData[{
+Cell[27033, 716, 1867, 41, 199, "Input",ExpressionUUID->"c58da438-72e8-4b33-b5e6-180ffcf5829c"],
+Cell[28903, 759, 462, 11, 24, "Message",ExpressionUUID->"79ffb7d5-237f-405a-b578-26cc816ba965"]
+}, Open  ]],
+Cell[29380, 773, 4966, 117, 556, "Input",ExpressionUUID->"a525b480-daec-4bb7-9baa-33acd5396916"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[34383, 895, 157, 3, 54, "Subsection",ExpressionUUID->"3ee3f138-3eaa-463c-ba9b-a0d8967398f7"],
+Cell[34543, 900, 576, 15, 52, "Input",ExpressionUUID->"866ba58d-656f-49df-8c24-4bcc961d2b5c"],
+Cell[35122, 917, 3473, 85, 430, "Input",ExpressionUUID->"976b6dca-f422-4622-b3d9-a4247d9a4ae3"],
+Cell[38598, 1004, 2725, 71, 304, "Input",ExpressionUUID->"62679fd0-b50b-4a1d-9526-7c00ef3c5683"],
+Cell[41326, 1077, 930, 20, 136, "Input",ExpressionUUID->"9d24d0ab-ba1e-461c-9368-18f7dc507be1"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[42293, 1102, 158, 3, 54, "Subsection",ExpressionUUID->"27046f94-fb02-489b-9ed8-a48bd845b072"],
+Cell[42454, 1107, 736, 22, 52, "Input",ExpressionUUID->"be3aa69e-d8b2-4388-9ea2-ffc188e00690"],
+Cell[43193, 1131, 2228, 49, 220, "Input",ExpressionUUID->"18cfbf10-d997-47c1-b941-8a0335a1097c"],
+Cell[45424, 1182, 1103, 26, 157, "Input",ExpressionUUID->"cb8982b0-c8f0-4edb-bba8-41fe5b0d2a72"],
+Cell[46530, 1210, 1313, 33, 136, "Input",ExpressionUUID->"c68afde5-dfa4-4484-b3aa-ad0d3ebdbe25"],
+Cell[47846, 1245, 257, 6, 52, "Input",ExpressionUUID->"8519f36b-2e04-4538-9e00-7f1f7c93f9d7"]
+}, Open  ]]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[48152, 1257, 151, 3, 67, "Section",ExpressionUUID->"7cf22073-c3eb-4421-93df-c56b9516b77f"],
+Cell[48306, 1262, 303, 6, 30, "Input",ExpressionUUID->"b0c49258-ef5d-46f7-be6a-a4ddc5c3dfb2"],
+Cell[CellGroupData[{
+Cell[48634, 1272, 343, 7, 30, "Input",ExpressionUUID->"19b75ca4-f65b-445f-9908-e092d3da19d4"],
+Cell[48980, 1281, 889, 12, 34, "Output",ExpressionUUID->"ac13c965-a276-4260-a6f3-76fa5c2c3b78"]
+}, Open  ]],
+Cell[49884, 1296, 364, 8, 30, "Input",ExpressionUUID->"0fc5a853-425d-40a6-a4ed-b2e91cddc86d"],
+Cell[CellGroupData[{
+Cell[50273, 1308, 298, 6, 30, "Input",ExpressionUUID->"27b21110-2304-4028-bfc9-70c16d0ae1d9"],
+Cell[50574, 1316, 805, 12, 34, "Output",ExpressionUUID->"fe713e6b-0ab2-4c9a-960f-a7eef7f2258a"]
+}, Open  ]]
+}, Open  ]]
+}, Open  ]],
+Cell[51418, 1333, 164, 3, 98, "Title",ExpressionUUID->"72606189-bd3b-4dc1-81ac-f9c850e505f3"]
+}
+]
+*)
+

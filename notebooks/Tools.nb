@@ -1,0 +1,68 @@
+(* Content-type: application/mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 7.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       145,          7]
+NotebookDataLength[      1910,         60]
+NotebookOptionsPosition[      1474,         45]
+NotebookOutlinePosition[      1946,         62]
+CellTagsIndexPosition[      1903,         59]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"RulesResolve", "[", "list_List", "]"}], ":=", 
+   RowBox[{"Map", "[", 
+    RowBox[{
+     RowBox[{
+      RowBox[{
+       RowBox[{"#1", "[", 
+        RowBox[{"[", "1", "]"}], "]"}], "\[Rule]", 
+       RowBox[{"(", 
+        RowBox[{
+         RowBox[{"#1", "[", 
+          RowBox[{"[", "2", "]"}], "]"}], "//.", "list"}], ")"}]}], "&"}], 
+     ",", "list"}], "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"RulesResolveAll", "[", "list_List", "]"}], ":=", 
+   RowBox[{"FixedPoint", "[", 
+    RowBox[{"RulesResolve", ",", "list"}], "]"}]}], ";"}]}], "Input",
+ CellChangeTimes->{{3.5455399876837797`*^9, 3.5455400306346607`*^9}, {
+  3.5455400710229053`*^9, 3.545540215524273*^9}, {3.5455402554789257`*^9, 
+  3.545540325847805*^9}, {3.5455404031822357`*^9, 3.545540435228682*^9}},
+ CellLabel->"In[64]:=",ExpressionUUID->"a0adb9d6-6227-43c6-b880-948ec532fa2c"]
+},
+WindowSize->{640, 652},
+WindowMargins->{{20, Automatic}, {Automatic, 44}},
+PrivateNotebookOptions->{"VersionedStylesheet"->{"Default.nb"[8.] -> False}},
+FrontEndVersion->"12.1 for Mac OS X x86 (64-bit) (March 13, 2020)",
+StyleDefinitions->"Default.nb",
+ExpressionUUID->"499920e6-f363-4e2d-94ee-5a2aef7c7522"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[545, 20, 925, 23, 52, "Input",ExpressionUUID->"a0adb9d6-6227-43c6-b880-948ec532fa2c"]
+}
+]
+*)
+
