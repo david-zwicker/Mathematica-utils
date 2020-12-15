@@ -1,12 +1,18 @@
 (* ::Package:: *)
 
 BeginPackage["ToPython`"]
- ToPython::usage = "ToPython[expression, numpyprefix] converts Mathematica expression to a Numpy compatible expression.
- because Numpy can be imported in several ways, numpystring is a string that will be added to appended to function names, e.g., Cos->numpy.cos"
+
+ToPython::usage = "ToPython[expression, numpyprefix] converts Mathematica expression to
+    a Numpy compatible expression. Because Numpy can be imported in several ways,
+    numpystring is a string that will be added to appended to function names, e.g.,
+    Cos->np.cos"
+ 
+ToPythonEquation::usage = "ToPythonEquation[equation, numpyprefix] converts a
+    Mathematica equation to a Numpy compatible express"
  
 Begin["Private`"]
 
-ToPython[expression_, numpyprefix_:"np"]:=Module[{result,greekrule,PythonForm,np,lp,rp,a,b},
+ToPython[expression_, numpyprefix_:"np", copy_:True]:=Module[{result,greekrule,PythonForm,np,lp,rp,a,b},
 (*FUNCTION TO CONVERT MATHEMATICA EXPRESSION TO NUMPY;
 ----------------------------------------------------;
 INPUT ARGUMENTS;
@@ -56,7 +62,23 @@ PythonForm[r_Real]:=Block[{a=MantissaExponent[r]},
 ];
 
 (*Greek characters*)
-greekrule={"\[Alpha]"->"alpha","\[Beta]"->"beta","\[Gamma]"->"gamma","\[Delta]"->"delta","\[CurlyEpsilon]"->"curlyepsilon","\[Zeta]"->"zeta","\[Eta]"->"eta","\[Theta]"->"theta","\[Iota]"->"iota","\[Kappa]"->"kappa","\[Lambda]"->"lambda","\[Mu]"->"mu","\[Nu]"->"nu","\[Xi]"->"xi","\[Omicron]"->"omicron","\[Pi]"->"pi","\[Rho]"->"rho","\[FinalSigma]"->"finalsigma","\[Sigma]"->"sigma","\[Tau]"->"tau","\[Upsilon]"->"upsilon","\[CurlyPhi]"->"curlyphi","\[Chi]"->"chi","\[Psi]"->"psi","\[Omega]"->"omega","\[CapitalAlpha]"->"Alpha","\[CapitalBeta]"->"Beta","\[CapitalGamma]"->"Gamma","\[CapitalDelta]"->"Delta","\[CapitalEpsilon]"->"CurlyEpsilon","\[CapitalZeta]"->"Zeta","\[CapitalEta]"->"Eta","\[CapitalTheta]"->"Theta","\[CapitalIota]"->"Iota","\[CapitalKappa]"->"Kappa","\[CapitalLambda]"->"Lambda","\[CapitalMu]"->"Mu","\[CapitalNu]"->"Nu","\[CapitalXi]"->"Xi","\[CapitalOmicron]"->"Omicron","\[CapitalPi]"->"Pi","\[CapitalRho]"->"Rho","\[CapitalSigma]"->"Sigma","\[CapitalTau]"->"Tau","\[CapitalUpsilon]"->"Upsilon","\[CapitalPhi]"->"CurlyPhi","\[CapitalChi]"->"Chi","\[CapitalPsi]"->"Psi","\[CapitalOmega]"->"Omega"};
+greekrule={
+    "\[Alpha]"->"alpha","\[Beta]"->"beta","\[Gamma]"->"gamma","\[Delta]"->"delta",
+    "\[CurlyEpsilon]"->"curlyepsilon","\[Zeta]"->"zeta","\[Eta]"->"eta",
+    "\[Theta]"->"theta","\[Iota]"->"iota","\[Kappa]"->"kappa","\[Lambda]"->"lambda",
+    "\[Mu]"->"mu","\[Nu]"->"nu","\[Xi]"->"xi","\[Omicron]"->"omicron","\[Pi]"->"pi",
+    "\[Rho]"->"rho","\[FinalSigma]"->"finalsigma","\[Sigma]"->"sigma","\[Tau]"->"tau",
+    "\[Upsilon]"->"upsilon","\[CurlyPhi]"->"curlyphi","\[Chi]"->"chi","\[Phi]" -> "phi",
+    "\[Psi]"->"psi",
+    "\[Omega]"->"omega","\[CapitalAlpha]"->"Alpha","\[CapitalBeta]"->"Beta",
+    "\[CapitalGamma]"->"Gamma","\[CapitalDelta]"->"Delta",
+    "\[CapitalEpsilon]"->"CurlyEpsilon","\[CapitalZeta]"->"Zeta",
+    "\[CapitalEta]"->"Eta","\[CapitalTheta]"->"Theta","\[CapitalIota]"->"Iota",
+    "\[CapitalKappa]"->"Kappa","\[CapitalLambda]"->"Lambda","\[CapitalMu]"->"Mu",
+    "\[CapitalNu]"->"Nu","\[CapitalXi]"->"Xi","\[CapitalOmicron]"->"Omicron",
+    "\[CapitalPi]"->"Pi","\[CapitalRho]"->"Rho","\[CapitalSigma]"->"Sigma",
+    "\[CapitalTau]"->"Tau","\[CapitalUpsilon]"->"Upsilon","\[CapitalPhi]"->"CurlyPhi",
+    "\[CapitalChi]"->"Chi","\[CapitalPsi]"->"Psi","\[CapitalOmega]"->"Omega"};
 
 (*Everything else*)
 PythonForm[h_[args__]]:=np<>ToLowerCase[PythonForm[h]]<>lp<>PythonForm[args]<>rp;
@@ -64,10 +86,14 @@ PythonForm[a_ListQ]:=np<>"array"<>StringReplace[ToString[a],{"{"-> "[","}"-> "]"
 PythonForm[allOther_]:=StringReplace[ToString[allOther,FortranForm],greekrule];
 
 (*Copy results to clipboard*)
-result = PythonForm[expression]; 
-CopyToClipboard[result];
+result = StringReplace[PythonForm[expression], greekrule];
+If[copy,CopyToClipboard[result]];
 result
 ]
+
+
+ToPythonEquation[Equal[a_, b_], numpyprefix_:"np", copy_:True]:=ToPython[a - b, numpyprefix, copy]
+
 
 End[]
 EndPackage[]
