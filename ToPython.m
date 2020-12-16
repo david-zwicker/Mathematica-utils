@@ -1,5 +1,22 @@
 (* ::Package:: *)
 
+(*This package provides a function to convert a Mathematica expression to numpy
+----------------------------------------------------;
+INPUT ARGUMENTS;
+expression: your mathematica expression, it can be numbers, literals, complexes or lists;
+numpy\[LetterSpace]prefix: string defining your Numpy import prefix, e.g.:
+if your used "import numpy as np", your prefix should be the string "np"
+if your used "from numpy import *", your prefix should be the empty string ""
+;
+OUTPUT;
+the Numpy python-ready expression (to be copied as a string);
+!The formatted expression will be copied ot your clipboard, ready to paste on Python!;
+------------------------------------------------------;
+Not tested for every possible combination; use at your risk, by Gustavo Wiederhecker with
+modifications by David Zwicker
+*)
+
+
 BeginPackage["ToPython`"]
 
 ToPython::usage = "ToPython[expression, numpyprefix] converts Mathematica expression to
@@ -12,56 +29,56 @@ ToPythonEquation::usage = "ToPythonEquation[equation, numpyprefix] converts a
  
 Begin["Private`"]
 
-ToPython[expression_, numpyprefix_:"np", copy_:True]:=Module[{result,greekrule,PythonForm,np,lp,rp,a,b},
-(*FUNCTION TO CONVERT MATHEMATICA EXPRESSION TO NUMPY;
-----------------------------------------------------;
-INPUT ARGUMENTS;
-expression: your mathematica expression, it can be numbers, literals, complexes or lists;
-numpy\[LetterSpace]prefix: string defining your Numpy import prefix, e.g.:
-if your used "import numpy as np", your prefix should be the string "np"
-if your used "from numpy import *", your prefix should be the empty string ""
-;
-OUTPUT;
-the Numpy python-ready expression (to be copied as a string);
-!The formatted expression will be copied ot your clipboard, ready to paste on Python!;
-------------------------------------------------------;
-Not tested for every possible combination; use at your risk, by Gustavo Wiederhecker*)
+ToPython[expression_, numpyprefix_:"np", copy_:True] := 
+    Module[{result, greekrule, PythonForm, np, a, b, l, m, args},
 
+(* determine the correct numpy prefix *)
 If[numpyprefix=="", np=numpyprefix, np=numpyprefix<>"."];
-(*if no prefix is included, the "." separator is not used*)
 
-lp="(";
-rp=")";
-PythonForm[Times[a_,Power[b_,-1]]]:=lp<>PythonForm[a]<>rp<>"/"<>lp<>PythonForm[b]<>rp;
-PythonForm[Rational[a_,b_]]:=PythonForm[a]<>"/"<>PythonForm[b];
-PythonForm[Complex[a_,b_]]:="complex"<>lp<>PythonForm[a]<>", "<>PythonForm[b]<>rp;
-PythonForm[Times[a_,b_]]:=PythonForm[a]<>" * "<>PythonForm[b];
-PythonForm[Plus[a_,b_]]:=PythonForm[a]<>" + "<>PythonForm[b];
-PythonForm[Power[a_,b_]]:=lp<>PythonForm[a]<>rp<>"**"<>lp<>PythonForm[b]<>rp;
-PythonForm[Arg]=np<>"angle";
-PythonForm[Exp[a_]]:=np<>"exp"<>lp<>PythonForm[a]<>rp;
+(* general function for formating output *)
+format[pattern_String, args__] := ToString @ StringForm[pattern, Sequence @@ PythonForm /@ List[args]];
 
-(*Some functions that are not defined in numpy*)
-PythonForm[Csc[a_]]:="1/"<>np<>"sin"<>lp<>PythonForm[a]<>rp;
-PythonForm[Sec[a_]]:="1/"<>np<>"cos"<>lp<>PythonForm[a]<>rp;
-PythonForm[Cot[a_]]:="1/"<>np<>"tan"<>lp<>PythonForm[a]<>rp;
-PythonForm[Csch[a_]]:="1/"<>np<>"sinh"<>lp<>PythonForm[a]<>rp;
-PythonForm[Sech[a_]]:="1/"<>np<>"cosh"<>lp<>PythonForm[a]<>rp;
-PythonForm[Coth[a_]]:="1/"<>np<>"tanh"<>lp<>PythonForm[a]<>rp;
+(* special forms that need to be recognized *)
+PythonForm[Times[-1, a_]] := format["-(``)", a];
+PythonForm[Power[a_, Rational[1, 2]]] := format[np<>"sqrt(``)", a];
+PythonForm[Times[a_, Power[b_, -1]]] := format["(``) / (``)", a, b];
 
-(*Handling arrays*)
-PythonForm[List[args__]]:=np<>"array"<>lp<>"["<>StringRiffle[PythonForm/@List[args], ", "]<>"]"<>rp;
+(* Simple math *)
+PythonForm[Rational[a_,b_]] := format["(``) / (``)", a, b];
+PythonForm[Complex[a_,b_]] := format["complex(``, ``)", a, b];
+PythonForm[Times[a_,b_]] := format["(``) * (``)", a, b];
+PythonForm[Plus[a_,b_]] := format["`` + ``", a, b];
+PythonForm[Power[a_,b_]] := format["(``) ** (``)", a, b];
+PythonForm[Exp[a_]] := format[np<>"exp(``)", a];
 
-(*Pi and E*)
-PythonForm[\[Pi]]=np<>"pi";
-PythonForm[E]=np<>"e";
+(* Some special functions *)
+PythonForm[Arg[a_]] := format[np<>"angle(``)", a];
+PythonForm[SphericalHarmonicY[l_, m_, a_, b_]] := format[
+    "special.sph_harm(``, ``, (``) % (2 * "<>np<>"pi), (``) % "<>np<>"pi)",
+    m, l, b, a];
 
-(*real numbers, engineering notation*)
-PythonForm[r_Real]:=Block[{a=MantissaExponent[r]},
+(* Some functions that are not defined in numpy *)
+PythonForm[Csc[a_]] := format["1 / "<>np<>"sin(``)", a];
+PythonForm[Sec[a_]] := format["1 / "<>np<>"cos(``)", a];
+PythonForm[Cot[a_]] := format["1 / "<>np<>"tan(``)", a];
+PythonForm[Csch[a_]] := format["1 / "<>np<>"sinh(``)", a];
+PythonForm[Sech[a_]] := format["1 / "<>np<>"cosh(``)", a];
+PythonForm[Coth[a_]] := format["1 / "<>np<>"tanh(``)", a];
+
+(* Handling arrays *)
+PythonForm[List[args__]] := np<>"array(["<>StringRiffle[PythonForm/@List[args], ", "]<>"])";
+PythonForm[a_ListQ] := np<>"array"<>StringReplace[ToString[a], {"{"-> "[","}"-> "]"}];
+
+(* Constants *)
+PythonForm[\[Pi]] = np<>"pi";
+PythonForm[E] = np<>"e";
+
+(* real numbers, engineering notation *)
+PythonForm[r_Real] := Block[{a=MantissaExponent[r]},
     If[r>=0,ToString[N[a[[1]],6]]<>"e"<>ToString[a[[2]]],"("<>ToString[N[a[[1]],6]]<>"e"<>ToString[a[[2]]]<>")"]
 ];
 
-(*Greek characters*)
+(* Greek characters *)
 greekrule={
     "\[Alpha]"->"alpha","\[Beta]"->"beta","\[Gamma]"->"gamma","\[Delta]"->"delta",
     "\[CurlyEpsilon]"->"curlyepsilon","\[Zeta]"->"zeta","\[Eta]"->"eta",
@@ -80,19 +97,18 @@ greekrule={
     "\[CapitalTau]"->"Tau","\[CapitalUpsilon]"->"Upsilon","\[CapitalPhi]"->"CurlyPhi",
     "\[CapitalChi]"->"Chi","\[CapitalPsi]"->"Psi","\[CapitalOmega]"->"Omega"};
 
-(*Everything else*)
-PythonForm[h_[args__]]:=np<>ToLowerCase[PythonForm[h]]<>lp<>PythonForm[args]<>rp;
-PythonForm[a_ListQ]:=np<>"array"<>StringReplace[ToString[a],{"{"-> "[","}"-> "]"}];
-PythonForm[allOther_]:=StringReplace[ToString[allOther,FortranForm],greekrule];
+(* Everything else *)
+PythonForm[h_[args__]] := np<>ToLowerCase[PythonForm[h]]<>"("<>PythonForm[args]<>")";
+PythonForm[allOther_] := StringReplace[ToString[allOther, FortranForm], greekrule];
 
-(*Copy results to clipboard*)
 result = StringReplace[PythonForm[expression], greekrule];
+(* Copy results to clipboard *)
 If[copy,CopyToClipboard[result]];
 result
 ]
 
 
-ToPythonEquation[Equal[a_, b_], numpyprefix_:"np", copy_:True]:=ToPython[a - b, numpyprefix, copy]
+ToPythonEquation[Equal[a_, b_], numpyprefix_:"np", copy_:True] := ToPython[a - b, numpyprefix, copy]
 
 
 End[]
