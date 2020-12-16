@@ -19,28 +19,33 @@ modifications by David Zwicker
 
 BeginPackage["ToPython`"]
 
-ToPython::usage = "ToPython[expression, numpyprefix] converts Mathematica expression to
-    a Numpy compatible expression. Because Numpy can be imported in several ways,
-    numpystring is a string that will be added to appended to function names, e.g.,
-    Cos->np.cos"
+ToPython::usage = "ToPython[expression, numpyprefix, copy]
+	converts Mathematica expression to a Numpy compatible expression. Because Numpy can
+	be imported in several ways, numpyprefix is a string that will be added to appended
+	to function names, e.g., Cos->np.cos. If copy==True, the result is copied to the clipboard"
  
-ToPythonEquation::usage = "ToPythonEquation[equation, numpyprefix] converts a
+ToPythonEquation::usage = "ToPythonEquation[equation, numpyprefix, copy] converts a
     Mathematica equation to a Numpy compatible express"
  
+
+
 Begin["Private`"]
 
+
 ToPython[expression_, numpyprefix_:"np", copy_:True] := 
-    Module[{result, greekrule, PythonForm, np, a, b, l, m, args},
+    Module[{result, greekrule, format, PythonForm, np, a, b, l, m, args},
 
 (* determine the correct numpy prefix *)
 If[numpyprefix=="", np=numpyprefix, np=numpyprefix<>"."];
 
 (* general function for formating output *)
-format[pattern_String, args__] := ToString @ StringForm[pattern, Sequence @@ PythonForm /@ List[args]];
+format[pattern_String, args__] := ToString @ StringForm[
+	StringReplace[pattern, "numpy."->np],
+	Sequence @@ PythonForm /@ List[args]];
 
 (* special forms that need to be recognized *)
 PythonForm[Times[-1, a_]] := format["-(``)", a];
-PythonForm[Power[a_, Rational[1, 2]]] := format[np<>"sqrt(``)", a];
+PythonForm[Power[a_, Rational[1, 2]]] := format["numpy.sqrt(``)", a];
 PythonForm[Times[a_, Power[b_, -1]]] := format["(``) / (``)", a, b];
 
 (* Simple math *)
@@ -49,21 +54,21 @@ PythonForm[Complex[a_,b_]] := format["complex(``, ``)", a, b];
 PythonForm[Times[a_,b_]] := format["(``) * (``)", a, b];
 PythonForm[Plus[a_,b_]] := format["`` + ``", a, b];
 PythonForm[Power[a_,b_]] := format["(``) ** (``)", a, b];
-PythonForm[Exp[a_]] := format[np<>"exp(``)", a];
+PythonForm[Exp[a_]] := format["numpy.exp(``)", a];
 
 (* Some special functions *)
-PythonForm[Arg[a_]] := format[np<>"angle(``)", a];
+PythonForm[Arg[a_]] := format["numpy.angle(``)", a];
 PythonForm[SphericalHarmonicY[l_, m_, a_, b_]] := format[
-    "special.sph_harm(``, ``, (``) % (2 * "<>np<>"pi), (``) % "<>np<>"pi)",
+    "special.sph_harm(``, ``, (``) % (2 * numpy.pi), (``) % numpy.pi)",
     m, l, b, a];
 
 (* Some functions that are not defined in numpy *)
-PythonForm[Csc[a_]] := format["1 / "<>np<>"sin(``)", a];
-PythonForm[Sec[a_]] := format["1 / "<>np<>"cos(``)", a];
-PythonForm[Cot[a_]] := format["1 / "<>np<>"tan(``)", a];
-PythonForm[Csch[a_]] := format["1 / "<>np<>"sinh(``)", a];
-PythonForm[Sech[a_]] := format["1 / "<>np<>"cosh(``)", a];
-PythonForm[Coth[a_]] := format["1 / "<>np<>"tanh(``)", a];
+PythonForm[Csc[a_]] := format["1 / numpy.sin(``)", a];
+PythonForm[Sec[a_]] := format["1 / numpy.cos(``)", a];
+PythonForm[Cot[a_]] := format["1 / numpy.tan(``)", a];
+PythonForm[Csch[a_]] := format["1 / numpy.sinh(``)", a];
+PythonForm[Sech[a_]] := format["1 / numpy.cosh(``)", a];
+PythonForm[Coth[a_]] := format["1 / numpy.tanh(``)", a];
 
 (* Handling arrays *)
 PythonForm[List[args__]] := np<>"array(["<>StringRiffle[PythonForm/@List[args], ", "]<>"])";
@@ -74,8 +79,8 @@ PythonForm[\[Pi]] = np<>"pi";
 PythonForm[E] = np<>"e";
 
 (* real numbers, engineering notation *)
-PythonForm[r_Real] := Block[{a=MantissaExponent[r]},
-    If[r>=0,ToString[N[a[[1]],6]]<>"e"<>ToString[a[[2]]],"("<>ToString[N[a[[1]],6]]<>"e"<>ToString[a[[2]]]<>")"]
+PythonForm[r_Real] := Block[{exp=MantissaExponent[r]},
+    If[r>=0,ToString[N[exp[[1]],6]]<>"e"<>ToString[exp[[2]]],"("<>ToString[N[exp[[1]],6]]<>"e"<>ToString[exp[[2]]]<>")"]
 ];
 
 (* Greek characters *)
