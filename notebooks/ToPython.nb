@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       158,          7]
-NotebookDataLength[     38461,        733]
-NotebookOptionsPosition[     34460,        668]
-NotebookOutlinePosition[     34799,        683]
-CellTagsIndexPosition[     34756,        680]
+NotebookDataLength[     39530,        759]
+NotebookOptionsPosition[     35213,        689]
+NotebookOutlinePosition[     35552,        704]
+CellTagsIndexPosition[     35509,        701]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -664,6 +664,27 @@ Cell[BoxData["\<\"np.sqrt(a)\"\>"], "Output",
  CellChangeTimes->{3.817120083304699*^9, 3.817120149058948*^9, 
   3.817120229284362*^9, 3.8171205550598392`*^9},
  CellLabel->"Out[29]=",ExpressionUUID->"977cf513-03c4-497a-8c96-b264f102d06c"]
+}, Open  ]],
+
+Cell[BoxData["ListQ"], "Input",
+ CellChangeTimes->{{3.8171328962132483`*^9, 
+  3.817132896774466*^9}},ExpressionUUID->"de8058ea-0d69-4077-8817-\
+1853b6fa296c"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"ToPython", "[", 
+  RowBox[{"{", 
+   RowBox[{"1", ",", "2", ",", 
+    RowBox[{"a", "+", "b", "+", 
+     RowBox[{"Sin", "[", "x", "]"}]}]}], "}"}], "]"}]], "Input",
+ CellChangeTimes->{{3.8171328786925697`*^9, 3.8171328909644003`*^9}},
+ CellLabel->"In[32]:=",ExpressionUUID->"096db8ac-16bc-4502-968b-388523b12c99"],
+
+Cell[BoxData["\<\"np.array([1, 2, a + b + np.sin(x)])\"\>"], "Output",
+ CellChangeTimes->{{3.81713288271318*^9, 3.8171328912871323`*^9}},
+ CellLabel->"Out[32]=",ExpressionUUID->"9bea2ab6-b107-489a-b2ca-02905bd0d16e"]
 }, Open  ]]
 },
 WindowSize->{808, 701},
@@ -734,6 +755,11 @@ Cell[33349, 642, 581, 9, 34, "Output",ExpressionUUID->"e82d6f66-259b-406c-acfa-a
 Cell[CellGroupData[{
 Cell[33967, 656, 237, 4, 30, "Input",ExpressionUUID->"0ae939ea-d5e9-419b-999a-64601c326ce5"],
 Cell[34207, 662, 237, 3, 34, "Output",ExpressionUUID->"977cf513-03c4-497a-8c96-b264f102d06c"]
+}, Open  ]],
+Cell[34459, 668, 159, 3, 30, "Input",ExpressionUUID->"de8058ea-0d69-4077-8817-1853b6fa296c"],
+Cell[CellGroupData[{
+Cell[34643, 675, 335, 7, 30, "Input",ExpressionUUID->"096db8ac-16bc-4502-968b-388523b12c99"],
+Cell[34981, 684, 216, 2, 34, "Output",ExpressionUUID->"9bea2ab6-b107-489a-b2ca-02905bd0d16e"]
 }, Open  ]]
 }
 ]

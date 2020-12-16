@@ -32,8 +32,8 @@ ToPythonEquation::usage = "ToPythonEquation[equation, numpyprefix, copy] convert
 Begin["Private`"]
 
 
-ToPython[expression_, numpyprefix_:"np", copy_:True] := 
-    Module[{result, greekrule, format, PythonForm, np, a, b, l, m, args},
+ToPython[expression_, numpyprefix_:"np", copy_:True] := Module[
+	{result, greekrule, format, PythonForm, np, a, b, l, m, args},
 
 (* determine the correct numpy prefix *)
 If[numpyprefix=="", np=numpyprefix, np=numpyprefix<>"."];
@@ -43,7 +43,7 @@ format[pattern_String, args__] := ToString @ StringForm[
 	StringReplace[pattern, "numpy."->np],
 	Sequence @@ PythonForm /@ List[args]];
 
-(* special forms that need to be recognized *)
+(* special forms that are recognized *)
 PythonForm[Times[-1, a_]] := format["-(``)", a];
 PythonForm[Power[a_, Rational[1, 2]]] := format["numpy.sqrt(``)", a];
 PythonForm[Times[a_, Power[b_, -1]]] := format["(``) / (``)", a, b];
@@ -71,8 +71,8 @@ PythonForm[Sech[a_]] := format["1 / numpy.cosh(``)", a];
 PythonForm[Coth[a_]] := format["1 / numpy.tanh(``)", a];
 
 (* Handling arrays *)
+PythonForm[a_NumericArray] := np<>"array("<>StringReplace[ToString@Normal@a, {"{"-> "[", "}"-> "]"}]<>")";
 PythonForm[List[args__]] := np<>"array(["<>StringRiffle[PythonForm/@List[args], ", "]<>"])";
-PythonForm[a_ListQ] := np<>"array"<>StringReplace[ToString[a], {"{"-> "[","}"-> "]"}];
 
 (* Constants *)
 PythonForm[\[Pi]] = np<>"pi";
@@ -108,7 +108,7 @@ PythonForm[allOther_] := StringReplace[ToString[allOther, FortranForm], greekrul
 
 result = StringReplace[PythonForm[expression], greekrule];
 (* Copy results to clipboard *)
-If[copy,CopyToClipboard[result]];
+If[copy, CopyToClipboard[result]];
 result
 ]
 
